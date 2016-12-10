@@ -3,13 +3,19 @@ var geometry, material, mesh;
 var tiles = {};
 
 var TILE_KEY = {
+  'b': 'banister',
   'O': 'column',
   'L': 'concave-corner',
   '¬': 'convex-corner',
+  'D': 'doorway',
+  'd': 'door',
   '#': 'stone-floor',
   'T': 'hairpin',
   'X': 'occluder',
-  '|': 'wall'
+  '|': 'wall',
+  'S': 'wall-support',
+  'W': 'wood-floor',
+  'w': 'wood-floor-edge'
 };
 var ROTATION_KEY = {
   ' ': 0,
@@ -20,6 +26,75 @@ var ROTATION_KEY = {
 };
 
 var map = [
+  [
+    "# # # # #   # # # # # ",
+    "# # # # # # # # # # # ",
+    "# # # # # # # # # # # ",
+    "# # # # # # # # # # # ",
+    "# # # # # # # # # # # ",
+    "# # # # # # # # # # # ",
+    "# # # # # # # # # # # ",
+    "# # # # # # # # # # # ",
+    "# # # # #   # # # # # ",
+  ],
+  [
+    "Lv|v|v|vL<  Lv|v|v|vL<",
+    "|>      |<  |>      |<",
+    "|>      ¬<|v¬v      |<",
+    "|>                  |<",
+    "D>                  D<",
+    "|>                  |<",
+    "|>      ¬^|^¬>      |<",
+    "|>      |<  |>      |<",
+    "L>|^|^|^L^  L>|^|^|^L^",
+  ],
+  [
+    "Lv|v|v|vL<  Lv|v|v|vL<",
+    "|>      |<  |>      |<",
+    "|>      ¬<Sv¬v      |<",
+    "|>      w>Wvw<      |<",
+    "|>      w>Wvw<      |<",
+    "|>      w>Wvw<      |<",
+    "|>      ¬^S^¬>      |<",
+    "|>      |<  |>      |<",
+    "L>|^|^|^L^  L>|^|^|^L^",
+  ],
+  [
+    "Lv|v|v|vL<  Lv|v|v|vL<",
+    "|>      |<  |>      |<",
+    "|>      ¬<Dv¬v      |<",
+    "|>      b>  b<      |<",
+    "|>      b>  b<      |<",
+    "|>      b>  b<      |<",
+    "|>      ¬^D^¬>      |<",
+    "|>      |<  |>      |<",
+    "L>|^|^|^L^  L>|^|^|^L^",
+  ],
+  [
+    "Lv|v|v|vL<  Lv|v|v|vL<",
+    "|>      |<  |>      |<",
+    "|>      ¬<|v¬v      |<",
+    "|>                  |<",
+    "|>                  |<",
+    "|>                  |<",
+    "|>      ¬^|^¬>      |<",
+    "|>      |<  |>      |<",
+    "L>|^|^|^L^  L>|^|^|^L^",
+  ],
+  [
+    "X X X X X X X X X X X ",
+    "X       X X X       X ",
+    "X       X X X       X ",
+    "X                   X ",
+    "X                   X ",
+    "X                   X ",
+    "X       X X X       X ",
+    "X       X X X       X ",
+    "X X X X X X X X X X X ",
+  ],
+];
+/*
+var map = [
 [
 "  # # # # # # # ",
 "  # # # # # # # ",
@@ -27,7 +102,7 @@ var map = [
 "  # # # # # # # ",
 ],
 [
-"  Lv|v|v|v|vL<",
+"  Lv|v|vDv+dv|vL<",
 "  |>        |<",
 "  |>        ¬<+# ",
 "  |>          ",
@@ -39,13 +114,32 @@ var map = [
 "  |>          ",
 ],
 [
+"  Lv|v|v|v|vL<",
+"  |>        ¬<",
+"  S>          ",
+"  |>          ",
+],
+[
+"  Lv|v|v|v|vL<",
+"  |>wvwv    ¬<",
+"  |>+#>W W w<    ",
+"  |>w^w^      ",
+],
+[
+"  Lv|v|v|v|vL<",
+"  |>bvbv    ¬<",
+"  D>+ >    b<    ",
+"  |>b^b^      ",
+],
+[
 "X X X X X X X ",
 "X X         X ",
 "X X           ",
 "X X           ",
 ],
 ];
-var mapOrigin = {x: -3, y: 0, z: -3};
+*/
+var mapOrigin = {x: -5, y: 0, z: -4};
 
 init();
 animate();
