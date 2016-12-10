@@ -27,7 +27,7 @@ var ROTATION_KEY = {
 
 var map = [
   [
-    "# # # # #   # # # # # ",
+    "# # # # #             ",
     "# # # # # # # # # # # ",
     "# # # # # # # # # # # ",
     "# # # # # # # # # # # ",
@@ -35,39 +35,50 @@ var map = [
     "# # # # # # # # # # # ",
     "# # # # # # # # # # # ",
     "# # # # # # # # # # # ",
-    "# # # # #   # # # # # ",
+    "            # # # # # ",
   ],
   [
-    "Lv|v|v|vL<  Lv|v|v|vL<",
-    "|>      |<  |>      |<",
+    "Lv|v|v|vL<            ",
+    "|>      |<  Lv|v|v|vL<",
     "|>      ¬<|v¬v      |<",
     "|>                  |<",
     "D>                  D<",
     "|>                  |<",
     "|>      ¬^|^¬>      |<",
-    "|>      |<  |>      |<",
+    "L>|^|^|^L^  |>      |<",
+    "            L>|^|^|^L^",
+  ],
+  [
+    "Lv|v|v|vL<  # # # # # ",
+    "|>      |<  Lv+# |v+# |v+# |v+# L<+# ",
+    "|>      ¬<|v¬vw^w^w^|<",
+    "|>                  |<",
+    "|>                  |<",
+    "|>                  |<",
+    "|>wvwvwv¬^|^¬>      |<",
+    "L>+# |^+# |^+# |^+# L^+#   |>      |<",
+    "# # # # #   L>|^|^|^L^",
+  ],
+  [
+    "Lv|v|v|vL<  Lv|v|v|vL<",
+    "S>+# W>W>W>S<+#   D>      D<",
+    "|>w^w^w^¬<Sv+# ¬vb^b^b^|<",
+    "|>      w>Wvw<      |<",
+    "|>      w>Wvw<      |<",
+    "|>      w>Wvw<      |<",
+    "|>bvbvbv¬^S^+# ¬>wvwvwv|<",
+    "D>      D<  S>+# W<W<W<S<+# ",
     "L>|^|^|^L^  L>|^|^|^L^",
   ],
   [
     "Lv|v|v|vL<  Lv|v|v|vL<",
-    "|>      |<  |>      |<",
-    "|>      ¬<Sv¬v      |<",
-    "|>      w>Wvw<      |<",
-    "|>      w>Wvw<      |<",
-    "|>      w>Wvw<      |<",
-    "|>      ¬^S^¬>      |<",
-    "|>      |<  |>      |<",
-    "L>|^|^|^L^  L>|^|^|^L^",
-  ],
-  [
-    "Lv|v|v|vL<  Lv|v|v|vL<",
-    "|>      |<  |>      |<",
-    "|>      ¬<Dv¬v      |<",
+    "D>      D<  |>      |<",
+    "|>b^b^b^¬<Dv¬v      |<",
     "|>      b>  b<      |<",
     "|>      b>  b<      |<",
     "|>      b>  b<      |<",
-    "|>      ¬^D^¬>      |<",
-    "|>      |<  |>      |<",
+    "|>      ¬^D^¬>bvbvbv|<",
+    "|>      |<  D>      D<",
     "L>|^|^|^L^  L>|^|^|^L^",
   ],
   [
@@ -164,7 +175,7 @@ function init() {
               mesh = new THREE.Mesh(tile.geometry, tile.material);
               mesh.scale.set(0.5, 0.5, 0.5);
               mesh.position.set(x + mapOrigin.x, y + mapOrigin.y, z + mapOrigin.z);
-              mesh.rotation.y = ROTATION_KEY[tileRow[x].charAt(1)] || 0;
+              mesh.rotation.y = ROTATION_KEY[tileComponents[i].charAt(1)] || 0;
               scene.add(mesh);
             }
           }
@@ -201,9 +212,10 @@ function animate() {
   requestAnimationFrame(animate);
 
   if (mesh) {
-    camera.position.x = Math.sin(t * 0.025);
-    camera.position.z = Math.cos(t * 0.026);
     t++;
+    camera.position.x = Math.sin(t * 0.025);
+    camera.position.y = 6 + 2.5 * Math.cos(t * 0.036);
+    camera.position.z = 0.75 * Math.sin(t * 0.026);
   }
 
   renderer.render(scene, camera);
