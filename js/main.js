@@ -1,6 +1,8 @@
 var scene, camera, renderer;
 var geometry, material, mesh;
 var tiles = {};
+var player;
+var mixer;
 
 var TILE_KEY = {
   'b': 'banister',
@@ -162,6 +164,8 @@ function init() {
   camera.rotation.x = -Math.PI / 2;
   camera.position.set(0, 10, 0);
 
+  mixer = new THREE.AnimationMixer(scene);
+
   var loadingManager = new THREE.LoadingManager(function() {
     for (var y = 0; y < map.length; y++) {
       var floorMap = map[y];
@@ -172,7 +176,7 @@ function init() {
           for (var i = 0; i < tileComponents.length; i++) {
             var tile = tiles[tileComponents[i].charAt(0)];
             if (tile) {
-              mesh = new THREE.Mesh(tile.geometry, tile.material);
+              var mesh = new THREE.Mesh(tile.geometry, tile.material);
               mesh.scale.set(0.5, 0.5, 0.5);
               mesh.position.set(x + mapOrigin.x, y + mapOrigin.y, z + mapOrigin.z);
               mesh.rotation.y = ROTATION_KEY[tileComponents[i].charAt(1)] || 0;
@@ -193,6 +197,19 @@ function init() {
       }
     }(key, tileName));
   }
+  jsonLoader.load('data/sneak.json', function(geometry, materials) {
+    console.log(geometry, materials);
+    material = materials[0];
+    material.skinning = true;
+    player = {geometry: geometry, material: material};
+    mixer.clipAction(geometry.animations[0]);
+    var mesh = new THREE.SkinnedMesh(player.geometry, player.material);
+    mesh.scale.set(0.03, 0.03, 0.03);
+    mesh.position.set(0, 4.2, 0);
+    scene.add(mesh);
+    playerMesh = mesh;
+    mixer.clipAction("Walk", mesh).play();
+  });
 
   var directionalLight = new THREE.DirectionalLight(0x7f7f7f, 2);
   directionalLight.position.set(0, 1, 0);
@@ -211,12 +228,12 @@ var t = 0;
 function animate() {
   requestAnimationFrame(animate);
 
-  if (mesh) {
-    t++;
-    camera.position.x = Math.sin(t * 0.025);
-    camera.position.y = 6 + 2.5 * Math.cos(t * 0.036);
-    camera.position.z = 0.75 * Math.sin(t * 0.026);
-  }
+//  t++;
+//  camera.position.x = Math.sin(t * 0.025);
+//  camera.position.y = 6 + 2.5 * Math.cos(t * 0.036);
+//  camera.position.z = 0.75 * Math.sin(t * 0.026);
+
+  mixer.update(0.03);
 
   renderer.render(scene, camera);
 }
